@@ -5,5 +5,5 @@ before_install:
 
 
 script:
-  - make -C lib/
+  - make -C SimpleGEL/lib/
   - make -C src/
