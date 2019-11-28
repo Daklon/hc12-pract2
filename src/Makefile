@@ -48,4 +48,4 @@ all : $(fuentes:.c=.elf) $(s19s)
 #	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
 
-include $(BASEDIR)/SimpleGEL/config/make.defs
+include $(BASEDIR)/config/make.defs
