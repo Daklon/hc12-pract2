@@ -6,7 +6,7 @@ int main(){
 
     serial_init();
     serial_print("\nInicializado");
-    port = serial_recv();
+    serial_recv();
     while(1){
         for(i=0;i<8;i++){
             entrada_salida('G',i,1);
