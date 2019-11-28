@@ -112,10 +112,10 @@ BOOT_PROG_LDFLAGS=-nostdlib -nostartfiles $(DEF_LDFLAGS)
 #
 LDFLAGS=$(DEF_LDFLAGS)
 
-include $(BASEDIR)/config/board.def
+include $(BASEDIR)/SimpleGEL/config/board.def
 
 # Setup according to target board
-include $(BASEDIR)/config/$(BOARD)/make.defs
+include $(BASEDIR)/SimpleGEL/config/$(BOARD)/make.defs
 
 #
 # .elf is for the simulator and gdb
