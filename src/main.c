@@ -1,6 +1,6 @@
 #include <types.h>
 #include <es.h>
-
+#include <timer.h>
 
 void sieteSeg_init(){
     //incializamos el puerto de salida G
@@ -18,10 +18,12 @@ void sieteSeg_digitos(uint8_t* number){
 }
 
 void sietesSeg_valor(uint16_t value){
+    int16_t i = 3;
     uint8_t number[4];
-    while(value){
+    while(i >= 0){
         number[i] = value % 10;
         value /= 10;
+        i--;
     }
     sieteSeg_digitos(number);
 }
