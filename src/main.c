@@ -17,7 +17,17 @@ void sieteSeg_digitos(uint8_t* number){
     }
 }
 
+void sietesSeg_valor(uint16_t value){
+    uint8_t number[4];
+    while(value){
+        number[i] = value % 10;
+        value /= 10;
+    }
+    sieteSeg_digitos(number);
+}
+
 int main(){
+    uint16_t i = 0;
     uint8_t number[4];
     number[0] = 0;
     number[1] = 1;
@@ -28,6 +38,8 @@ int main(){
     serial_recv();
     sieteSeg_init();
     while(1){
-        sieteSeg_digitos(number);
+        sietesSeg_valor(1234);
+        //sietesSeg_valor(i);
+        i++;
     }
 }
