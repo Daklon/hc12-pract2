@@ -2,46 +2,54 @@
 #include <es.h>
 #include <timer.h>
 
+uint8_t display_digit = 0;
+uint8_t number[4];
+
 void sieteSeg_init(){
     //incializamos el puerto de salida G
     e_s_total('G',255);
 }
 
-void sieteSeg_digitos(uint8_t* number){
+void sieteSeg_digitos(uint8_t* value){
     uint8_t i;
-    uint8_t value = 128;//10000000
+    uint8_t mask = (1 << 7);//10000000
     for (i=0;i<4;i++){
-        value |= number[i]; //ponemos la parte mas significativa, para encender el display adecuado y la parte menos significativa contiene el valor
-        escribir_puerto('G',value);
-        value = value >> 1;
+        number[i] |= mask;
+        mas = mask >> 1;
     }
 }
 
-void sietesSeg_valor(uint16_t value){
+void sieteSeg_valor(uint16_t value){
     int16_t i = 3;
-    uint8_t number[4];
+    uint8_t mask = (1 << 7);
     while(i >= 0){
         number[i] = value % 10;
+        number[i] |= mask;
         value /= 10;
         i--;
     }
     sieteSeg_digitos(number);
 }
 
+void update_siete_seg(){
+    if(display_digit > 3){
+        display_digit = 0;
+    }
+    escribir_puerto('G',number[display_digit]);
+    display_digit++;
+}
+
 int main(){
     uint16_t i = 0;
-    uint8_t number[4];
-    number[0] = 0;
-    number[1] = 1;
-    number[2] = 2;
-    number[3] = 3;
     serial_init();
     serial_print("\nInicializado");
     serial_recv();
     sieteSeg_init();
+    initialize(); //initializes timer
+    periodic_f(&update_siete_seg,2500);
     while(1){
-        sietesSeg_valor(1234);
-        //sietesSeg_valor(i);
+        sietesSeg_valor(i);
+        delayms(500);
         i++;
     }
 }
