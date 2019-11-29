@@ -1,23 +1,23 @@
 #include <types.h>
 #include <es.h>
 
+
 void sieteSeg_init(){
     //incializamos el puerto de salida G
-    e_s_total('G','255');
+    e_s_total('G',255);
 }
 
 void sieteSeg_digitos(uint8_t* number){
-    uint8_t i = 0;
+    uint8_t i;
     uint8_t value = 128;//10000000
-    uint8_t mask = 15;//00001111
-    for (i;i<4;i++){
-        number[i] &= ~mask;//nos aseguramos de que la parte mas significativa está a 0
+    for (i=0;i<4;i++){
         value |= number[i]; //ponemos la parte mas significativa, para encender el display adecuado y la parte menos significativa contiene el valor
+        escribir_puerto('G',value);
+        value = value >> 1;
     }
 }
 
 int main(){
-    uint16_t i;
     uint8_t number[4];
     number[0] = 0;
     number[1] = 1;
