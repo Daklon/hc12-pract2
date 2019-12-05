@@ -32,6 +32,7 @@ void sieteSeg_valor(uint16_t value){
         serial_print("-");
         serial_printbinbyte(number[i]);
         value /= 10;
+        mask = mask >> 1;
         i--;
     }
     sieteSeg_digitos(number);
