@@ -39,17 +39,43 @@ void update_siete_seg(){
     display_digit++;
 }
 
+void potenciometro_init() {
+	// Utilizaremos el puerto de salida 'T' en modo input
+	e_s_total('T', 0);
+}
+
+uint8_t get_potenciometro() {
+	/*
+	uint8_t valor = leer_puerto('G');
+	uint8_t *ret[4]; 
+	for (uint8_t i = 0; i < 4; i++) {
+		ret[i] = valor >>= 8;
+	}
+	return ret;
+	*/
+	return leer_puerto('T');
+}
+
 int main(){
     uint16_t i = 0;
+	uint8_t potval = 0;
     serial_init();
     serial_print("\nInicializado");
     serial_recv();
     sieteSeg_init();
+	potenciometro_init();
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
     while(1){
         sietesSeg_valor(i);
         delayms(500);
         i++;
+
+		// Potenciometro
+		potval = get_potenciometro();
+		serial_print("\nPotenciometro: \n");
+		serial_printdecbyte(potval);
+		sieteSeg_valor(potval);
+        delayms(500);
     }
 }
