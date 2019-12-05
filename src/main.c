@@ -21,9 +21,9 @@ void sieteSeg_digitos(uint8_t* value){
 }
 
 void sieteSeg_valor(uint16_t value){
-    int16_t i = 3;
+    int16_t i = 0;
     uint8_t mask = (1 << 7);
-    while(i >= 0){
+    while(i < 4){
         number[i] = value % 10;
         serial_print("\n");
         serial_printdecword(value);
@@ -36,7 +36,7 @@ void sieteSeg_valor(uint16_t value){
         serial_printbinbyte(number[i]);
         value /= 10;
         mask = mask >> 1;
-        i--;
+        i++;
     }
 }
 
