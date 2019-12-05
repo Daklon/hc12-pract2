@@ -16,9 +16,6 @@ void sieteSeg_digitos(uint8_t* value){
     for (i=0;i<4;i++){
         number[i] = value[i];
         number[i] |= mask;
-        serial_print("\n-----");
-        serial_printbinbyte(number[i]);
-        serial_print("\n------");
         mask = mask >> 1;
     }
 }
@@ -29,6 +26,8 @@ void sieteSeg_valor(uint16_t value){
     while(i >= 0){
         number[i] = value % 10;
         serial_print("\n");
+        serial_printbinbyte(value);
+        serial_print("-");
         serial_printdecbyte(i);
         serial_print("-");
         serial_printbinbyte(number[i]);
@@ -56,29 +55,15 @@ void update_siete_seg(){
 
 int main(){
     uint16_t i = 0;
-    uint8_t mynumber[4];
     serial_init();
     serial_print("\nInicializado");
     serial_recv();
     sieteSeg_init();
     initialize(); //initializes timer
-    mynumber[0] = 1;
-    mynumber[1] = 2;
-    mynumber[2] = 3;
-    mynumber[3] = 4;
-    serial_printbinbyte(number[0]);
-    serial_print("\n");
-    serial_printbinbyte(number[1]);
-    serial_print("\n");
-    serial_printbinbyte(number[2]);
-    serial_print("\n");
-    serial_printbinbyte(number[3]);
-    serial_print("\n");
     periodic_f(&update_siete_seg,250);
-    sieteSeg_digitos(mynumber);
     while(1){
         //sieteSeg_valor(i);
-        delayms(500);
+        delayms(1500);
         i++;
     }
 }
