@@ -42,18 +42,23 @@ void update_siete_seg(){
 
 void potenciometro_init() {
 	// Utilizaremos el puerto de salida 'T' en modo input
-	e_s_total('T', 0);
+	entrada_salida('A', 0, 0);
 }
 
 uint16_t get_potenciometro() {
 	uint8_t port = leer_puerto('T');
-	uint8_t poten[4];
+	uint16_t poten[4];
 	uint16_t ret = 0;
 
-	if (atd_devuelveValores(port, &poten, 4) == 1) {
+	if (atd_devuelveValores(port, poten, 4) == 1 || 1 == 1) {
 		// Convert to uint16_t
+		serial_print("\nPoten:\n");
 		for (uint8_t i = 0; i < 4; i++) {
+			serial_printbinword(poten[i]);
+			serial_print("-");
 			ret += poten[i] << i;
+			serial_printbinword(ret);
+			serial_print("\n");
 		}
 	}
 	return ret;
