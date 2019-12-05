@@ -62,13 +62,13 @@ int main(){
     mynumber[1] = 2;
     mynumber[2] = 3;
     mynumber[3] = 4;
-    serial_printbinbyte(mynumber[0]);
+    serial_printbinbyte(number[0]);
     serial_print("\n");
-    serial_printbinbyte(mynumber[1]);
+    serial_printbinbyte(number[1]);
     serial_print("\n");
-    serial_printbinbyte(mynumber[2]);
+    serial_printbinbyte(number[2]);
     serial_print("\n");
-    serial_printbinbyte(mynumber[3]);
+    serial_printbinbyte(number[3]);
     serial_print("\n");
     periodic_f(&update_siete_seg,250);
     sieteSeg_digitos(mynumber);
