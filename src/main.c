@@ -25,15 +25,7 @@ void sieteSeg_valor(uint16_t value){
     uint8_t mask = (1 << 4);
     while(i >= 0){
         number[i] = value % 10;
-        serial_print("\n");
-        serial_printdecword(value);
-        serial_print("-");
-        serial_printdecbyte(i);
-        serial_print("-");
-        serial_printbinbyte(number[i]);
         number[i] |= mask;
-        serial_print("-");
-        serial_printbinbyte(number[i]);
         value /= 10;
         mask = mask << 1;
         i--;
@@ -45,10 +37,6 @@ void update_siete_seg(){
         display_digit = 0;
     }
     escribir_puerto('G',number[display_digit]);
-    //serial_print("\n");
-    //serial_printbinbyte(number[display_digit]);
-    //serial_print("-");
-    //serial_printdecbyte(display_digit);
     display_digit++;
 }
 
@@ -60,9 +48,8 @@ int main(){
     sieteSeg_init();
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
-    sieteSeg_valor(1235);
     while(1){
-        //sieteSeg_valor(i);
+        sieteSeg_valor(i);
         delayms(1500);
         i++;
     }
