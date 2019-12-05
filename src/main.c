@@ -60,7 +60,7 @@ int main(){
     serial_recv();
     sieteSeg_init();
     initialize(); //initializes timer
-    periodic_f(&update_siete_seg,250);
+    periodic_f(&update_siete_seg,2500);
     sieteSeg_valor(1235);
     while(1){
         //sieteSeg_valor(i);
