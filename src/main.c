@@ -38,7 +38,6 @@ void sieteSeg_valor(uint16_t value){
         mask = mask >> 1;
         i--;
     }
-    sieteSeg_digitos(number);
 }
 
 void update_siete_seg(){
