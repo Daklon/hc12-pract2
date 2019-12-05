@@ -15,7 +15,7 @@ void sieteSeg_digitos(uint8_t* value){
     uint8_t mask = (1 << 7);//10000000
     for (i=0;i<4;i++){
         number[i] |= mask;
-        mas = mask >> 1;
+        mask = mask >> 1;
     }
 }
 
@@ -51,7 +51,7 @@ int main(){
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
     while(1){
-        sietesSeg_valor(i);
+        sieteSeg_valor(i);
         delayms(500);
         i++;
     }
