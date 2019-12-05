@@ -14,7 +14,11 @@ void sieteSeg_digitos(uint8_t* value){
     uint8_t i;
     uint8_t mask = (1 << 7);//10000000
     for (i=0;i<4;i++){
+        number[i] = value[i];
         number[i] |= mask;
+        serial_print("\n-----");
+        serial_printbinbyte(number[i]);
+        serial_print("\n------");
         mask = mask >> 1;
     }
 }
