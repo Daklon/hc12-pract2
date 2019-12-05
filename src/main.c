@@ -38,6 +38,7 @@ void update_siete_seg(){
     escribir_puerto('G',number[display_digit]);
     serial_print("\n");
     serial_printdecbyte(number[display_digit]);
+    serial_print("-");
     serial_printdecbyte(display_digit);
     display_digit++;
 }
