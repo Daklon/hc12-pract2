@@ -1,6 +1,7 @@
 #include <types.h>
 #include <es.h>
 #include <timer.h>
+#include <atd_lib.h>
 
 uint8_t display_digit = 0;
 uint8_t number[4];
@@ -44,7 +45,7 @@ void potenciometro_init() {
 	e_s_total('T', 0);
 }
 
-uint8_t get_potenciometro() {
+uint16_t get_potenciometro() {
 	uint8_t port = leer_puerto('T');
 	uint8_t poten[4];
 	uint16_t ret = 0;
@@ -59,8 +60,7 @@ uint8_t get_potenciometro() {
 }
 
 int main(){
-    uint16_t i = 0;
-	uint8_t potval = 0;
+    uint16_t i = 0, potval = 0;
     serial_init();
     serial_print("\nInicializado");
     serial_recv();
