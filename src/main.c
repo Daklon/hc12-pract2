@@ -57,7 +57,7 @@ int main(){
     serial_recv();
     sieteSeg_init();
     initialize(); //initializes timer
-    periodic_f(&update_siete_seg,2500);
+    periodic_f(&update_siete_seg,250);
     while(1){
         sieteSeg_valor(i);
         delayms(500);
