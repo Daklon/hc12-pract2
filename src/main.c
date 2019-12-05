@@ -26,7 +26,7 @@ void sieteSeg_valor(uint16_t value){
     while(i >= 0){
         number[i] = value % 10;
         serial_print("\n");
-        serial_printdecbyte(value);
+        serial_printdecword(value);
         serial_print("-");
         serial_printdecbyte(i);
         serial_print("-");
