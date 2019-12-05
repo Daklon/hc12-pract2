@@ -24,7 +24,13 @@ void sieteSeg_valor(uint16_t value){
     uint8_t mask = (1 << 7);
     while(i >= 0){
         number[i] = value % 10;
+        serial_print("\n");
+        serial_printdecbyte(i);
+        serial_print("-");
+        serial_printbinbyte(number[i]);
         number[i] |= mask;
+        serial_print("-");
+        serial_printbinbyte(number[i]);
         value /= 10;
         i--;
     }
@@ -36,10 +42,10 @@ void update_siete_seg(){
         display_digit = 0;
     }
     escribir_puerto('G',number[display_digit]);
-    serial_print("\n");
-    serial_printbinbyte(number[display_digit]);
-    serial_print("-");
-    serial_printbinbyte(display_digit);
+    //serial_print("\n");
+    //serial_printbinbyte(number[display_digit]);
+    //serial_print("-");
+    //serial_printdecbyte(display_digit);
     display_digit++;
 }
 
