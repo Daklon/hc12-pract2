@@ -52,14 +52,20 @@ void update_siete_seg(){
 
 int main(){
     uint16_t i = 0;
+    uint8_t mynumber[4];
     serial_init();
     serial_print("\nInicializado");
     serial_recv();
     sieteSeg_init();
     initialize(); //initializes timer
+    mynumber[0] = 1;
+    mynumber[1] = 2;
+    mynumber[2] = 3;
+    mynumber[3] = 4;
     periodic_f(&update_siete_seg,250);
+    sieteSeg_digitos(mynumber);
     while(1){
-        sieteSeg_valor(i);
+        //sieteSeg_valor(i);
         delayms(500);
         i++;
     }
