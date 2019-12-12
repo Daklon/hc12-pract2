@@ -68,7 +68,7 @@ uint16_t get_potenciometro() {
 		serial_print("\nPoten:\n");
 		for (uint8_t i = 0; i < 4; i++) {
 			serial_printbinword(poten[i]);
-			serial_print("-");
+			serial_print(" --- ");
 			ret += poten[i] << i;
 			serial_printbinword(ret);
 			serial_print("\n");
@@ -94,7 +94,7 @@ int main(){
 		// Potenciometro
 		potval = get_potenciometro();
 		serial_print("\nPotenciometro: \n");
-		serial_printdecbyte(potval);
+		serial_printdecword(potval);
 		sieteSeg_valor(potval);
         delayms(500);
     }
