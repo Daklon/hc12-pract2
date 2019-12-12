@@ -224,7 +224,7 @@ uint8_t array_to_uint(uint8_t* value){
     return temp;
 }
 
-uint8_t* set_shifted_value(uint8_t* value,uint8_t new_value,uint8_t shifts){
+char* set_shifted_value(char* value,char new_value){
     for(uint8_t i = 3;i>0;i--){
         value[i] = value[i-1];
     }
@@ -246,7 +246,7 @@ void copyto(char* to, char* from){
 }
 
 int main(){
-    uint16_t i = 0, potval = 0;
+    uint16_t i = 0;
     char keyboard_input[4],temp[0],value;
     keyboard_input[3] = 0;
     temp[0] = 0;
@@ -285,7 +285,7 @@ int main(){
                     temp[0] = 0;
                 }
             }
-            temp = set_shifted_value(temp,value,1);
+            temp = set_shifted_value(temp,value);
             i++;
         }
 		sieteSeg_digitos(temp);
