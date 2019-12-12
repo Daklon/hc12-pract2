@@ -239,8 +239,14 @@ void set_motor_speed(uint8_t speed){
     cambiaPWDTYporciento(speed);
 }
 
+void copyto(char* to, char* from){
+    for (uint8_t i = 0;i < 4;i++){
+       to[i] = from[i]; 
+    }
+}
+
 int main(){
-    uint16_t i = 0, potval = 0,;
+    uint16_t i = 0, potval = 0;
     char keyboard_input[4],temp[0],value;
     keyboard_input[3] = 0;
     temp[0] = 0;
@@ -255,24 +261,24 @@ int main(){
     while(1){
         value = teclado_getch();
         if (value == '#'){//cancelar
-            temp = keyboard_input;
+            copyto(temp,keyboard_input);
             i = 0;
         }else if (value == '*'){//aceptar
             //comprobar si el valor está entre 0 y 100
             if (array_to_uint(temp)>= 100 && array_to_uint(temp) <= 0){
-                keyboard_input = temp;
+                copyto(keyboard_input,temp);
                 //ponemos el motor a esa velocidad
                 set_motor_speed(array_to_uint(temp));
             } else {
-                temp = keyboard_input;
+                copyto(temp,keyboard_input);
             }
             i = 0;
         } else if (i>3){//demasiados caracteres
             i = 0;
-            temp = keyboard_input;
+            copyto(temp,keyboard_input);
         }else if (array_to_uint(temp) >= 100 && array_to_uint(temp) <= 0){//comprobar si el valor está entre 0 y 100
             i = 0;
-            temp = keyboard_input;
+            copyto(temp,keyboard_input);
         }else{
             if(i == 0){
                 for(uint8_t j = 0;j<4;j++){
