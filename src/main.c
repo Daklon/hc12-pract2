@@ -75,6 +75,11 @@ uint16_t get_potenciometro() {
 	return ret;
 }
 
+void teclado_init(){
+    //configuramos puerto
+    e_s_total('G',255);
+}
+
 int main(){
     uint16_t i = 0, potval = 0;
     serial_init();
