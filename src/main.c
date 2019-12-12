@@ -146,9 +146,10 @@ uint8_t get_teclado_inputs(){
 char teclado_getch(){
     uint8_t mask,readed,column,row;
     //comprobamos el teclado hasta que haya una pulsación
-    mask = 84;
     do{
         readed = leer_puerto('H');
+        serial_printbinword(readed);
+        delayms(1000);
     }while (readed != mask);
     
     for(int i = 0;i<3;i++){
