@@ -190,6 +190,7 @@ char teclado_getch_timeout(uint32_t milis){
     while (get_teclado_inputs() != 4 || boolean_timeout);
     if (boolean_timeout){
         return 'T';
+    }
     delayms(20);         
     //comprobamos el teclado hasta que haya una pulsación
     do{                  
@@ -197,6 +198,7 @@ char teclado_getch_timeout(uint32_t milis){
     }while (row == 4 || boolean_timeout);
     if (boolean_timeout){
         return 'T';
+    }
     delayms(20);         
     row = get_teclado_inputs();
     for(int i = 0;i<3;i++){
