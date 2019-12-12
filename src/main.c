@@ -98,6 +98,6 @@ int main(){
 		serial_print("\nPotenciometro: \n");
 		serial_printdecword(potval);
 		sieteSeg_valor(potval);
-		delayms(200)
+		delayms(200);
     }
 }
