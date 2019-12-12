@@ -42,8 +42,20 @@ void update_siete_seg(){
 }
 
 void potenciometro_init() {
-	// Utilizaremos el puerto de salida 'T' en modo input
-	entrada_salida('A', 0, 0);
+    if (
+        atd_setBits(0, 10) &&
+        atd_setPin(0, 0) &&
+        atd_setMultiple(0, 0) &&
+        atd_setCiclos(0, 16) &&
+        atd_setNumConversiones(0, 8) &&
+        atd_setScan(0,1) &&
+        atd_iniciaConversion(0)
+        ){
+            serial_print("\nConfiguración correcta\n");
+        } else {
+            serial_print("\nERROR Configuración. PARAMOS\n");
+            while(1);
+        }
 }
 
 uint16_t get_potenciometro() {
