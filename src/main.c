@@ -152,8 +152,8 @@ char teclado_getch(){
     
     for(int i = 0;i<3;i++){
         set_teclado_scan_out(i);
-        delayms(1);//esperamos un poco para que el valor se estabilice
-        if (get_teclado_inputs() > 0){
+        delayms(10);//esperamos un poco para que el valor se estabilice
+        if (get_teclado_inputs() != 4){
             column = i;
             row = get_teclado_inputs();
         }
@@ -161,6 +161,7 @@ char teclado_getch(){
     set_teclado_scan_out(3); //devolvemos todas las columnas a 0 para poder detectar nuevas pulsaciones
     serial_print("\nvalues:");
     serial_printdecbyte(column);
+    serial_print("-");
     serial_printdecbyte(row);
     return matrix_teclado [column][row];
 }
