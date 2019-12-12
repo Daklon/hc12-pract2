@@ -14,6 +14,7 @@
 
 uint8_t display_digit = 0;
 uint8_t number[4];
+char matrix_teclado[3][4];
 
 void sieteSeg_init(){
     //incializamos el puerto de salida G
@@ -89,6 +90,21 @@ void teclado_init(){
     e_s_total('H',212);
     //ponemos a 1 los bits de salida
     escribir_puerto('H',84);
+    //mapeamos teclado
+    matrix_teclado[0][0] = '1';
+    matrix_teclado[0][1] = '4';
+    matrix_teclado[0][2] = '7';
+    matrix_teclado[0][3] = '*';
+    
+    matrix_teclado[1][0] = '2';
+    matrix_teclado[1][1] = '5';
+    matrix_teclado[1][2] = '8';
+    matrix_teclado[1][3] = '0';
+    
+    matrix_teclado[2][0] = '3';
+    matrix_teclado[2][1] = '6';
+    matrix_teclado[2][2] = '9';
+    matrix_teclado[2][3] = '#';
 }
 
 void set_teclado_scan_out(uint8_t pin){
@@ -109,10 +125,21 @@ void set_teclado_scan_out(uint8_t pin){
 }
 
 uint8_t get_teclado_inputs(){
-    teclado = leer_pin('H',)
+    uint8_t teclado;
+    if (leer_pin('H',FILA_UNO) == 1){
+        return 0;
+    }else if(leer_pin('H',FILA_DOS) == 1){
+        return 1;
+    }else if(leer_pin('H',FILA_TRES) == 1){
+        return 2;
+    }else if(leer_pin('H',FILA_CUATRO) == 1){
+        return 3;
+    }
+    return 4; //error
 }
 
 char teclado_getch(){
+    uint8_t column,row;
     //comprobamos el teclado hasta que haya una pulsación
     mask = 84;
     do{
@@ -122,8 +149,14 @@ char teclado_getch(){
     for(int i = 0;i<3;i++){
         set_teclado_scan_out(i);
         delayms(1);
-
+        if (get_teclado_inputs() > 0){
+            column = i;
+            while (get_teclado_inputs() > 3);//esperamos a leer el valor de la fila
+            delayms(2);//le damos tiempo para que se estabilice
+            row = get_teclado_inputs();
+        }
     }
+    return matrix_teclado [column][row];
 }
 
 int main(){
