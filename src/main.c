@@ -148,9 +148,6 @@ char teclado_getch(){
     //comprobamos el teclado hasta que haya una pulsación
     do{
         readed = get_teclado_inputs();
-        serial_printbinbyte(readed);
-        serial_print("\n");
-        delayms(1000);
     }while (readed == 4);
     
     for(int i = 0;i<3;i++){
@@ -162,6 +159,9 @@ char teclado_getch(){
         }
     }
     set_teclado_scan_out(3); //devolvemos todas las columnas a 0 para poder detectar nuevas pulsaciones
+    serial_print("\nvalues:");
+    serial_printdecbyte(column);
+    serial_printdecbyte(row);
     return matrix_teclado [column][row];
 }
 
@@ -188,7 +188,11 @@ int main(){
 
 		serial_print("\nTECLADO:\n");
 		while ((tecladoval = teclado_getch()) != '#') {
-			serial_print(tecladoval + '0');
+		    if(tecladoval == '1'){
+		        serial_print('1');
+		    }else{
+			    serial_print(tecladoval + '0');
+            }
 		}
     }
 }
