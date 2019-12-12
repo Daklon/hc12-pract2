@@ -76,10 +76,45 @@ uint16_t get_potenciometro() {
 }
 
 void teclado_init(){
-    //configuramos puerto T como x,s,e,s,e,s,e,e
-    e_s_total('T',84);
+    //configuramos puerto T como s,s,e,s,e,s,e,e
+    e_s_total('H',212);
     //ponemos a 1 los bits de salida
-    escribir_puerto('T',84);
+    escribir_puerto('H',84);
+}
+
+void set_teclado_scan_out(uint8_t pin){
+    switch pin{
+        case 0:
+            escribir_pin('H',COLUMNA_UNO,1);   
+            escribir_pin('H',COLUMNA_DOS,0);
+            escribir_pin('H',COLUMNA_TRES,0);
+        case 1:
+            escribir_pin('H',COLUMNA_UNO,0);   
+            escribir_pin('H',COLUMNA_DOS,1);
+            escribir_pin('H',COLUMNA_TRES,0);
+        case 2:
+            escribir_pin('H',COLUMNA_UNO,0);   
+            escribir_pin('H',COLUMNA_DOS,0);
+            escribir_pin('H',COLUMNA_TRES,1);
+    }
+}
+
+uint8_t get_teclado_inputs(){
+    teclado = leer_pin('H',)
+}
+
+char teclado_getch(){
+    //comprobamos el teclado hasta que haya una pulsación
+    mask = 84;
+    do{
+        readed = leer_puerto('H');
+    }while (readed != mask);
+    
+    for(int i = 0;i<3;i++){
+        set_teclado_scan_out(i);
+        delayms(1);
+
+    }
 }
 
 int main(){
