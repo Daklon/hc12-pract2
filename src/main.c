@@ -3,6 +3,15 @@
 #include <timer.h>
 #include <atd_lib.h>
 
+#define COLUMNA_UNO 4
+#define COLUMNA_DOS 6
+#define COLUMNA_TRES 2
+
+#define FILA_UNO 5
+#define FILA_DOS 0
+#define FILA_TRES 1
+#define FILA_CUATRO 3
+
 uint8_t display_digit = 0;
 uint8_t number[4];
 
