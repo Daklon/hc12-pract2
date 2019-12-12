@@ -88,8 +88,10 @@ uint16_t get_potenciometro() {
 void teclado_init(){
     //configuramos puerto T como s,s,e,s,e,s,e,e
     e_s_total('H',212);
-    //ponemos a 1 los bits de salida
-    escribir_puerto('H',84);
+    //configuramos pullups
+    ad_pullup('H',1);
+    //ponemos a 0 los bits de salida
+    escribir_puerto('H',0);
     //mapeamos teclado
     matrix_teclado[0][0] = '1';
     matrix_teclado[0][1] = '4';
@@ -121,17 +123,21 @@ void set_teclado_scan_out(uint8_t pin){
             escribir_pin('H',COLUMNA_UNO,0);   
             escribir_pin('H',COLUMNA_DOS,0);
             escribir_pin('H',COLUMNA_TRES,1);
+        case 3:
+            escribir_pin('H',COLUMNA_UNO,0);   
+            escribir_pin('H',COLUMNA_DOS,0);
+            escribir_pin('H',COLUMNA_TRES,0);
     }
 }
 
 uint8_t get_teclado_inputs(){
-    if (leer_pin('H',FILA_UNO) == 1){
+    if (leer_pin('H',FILA_UNO) == 0){
         return 0;
-    }else if(leer_pin('H',FILA_DOS) == 1){
+    }else if(leer_pin('H',FILA_DOS) == 0){
         return 1;
-    }else if(leer_pin('H',FILA_TRES) == 1){
+    }else if(leer_pin('H',FILA_TRES) == 0){
         return 2;
-    }else if(leer_pin('H',FILA_CUATRO) == 1){
+    }else if(leer_pin('H',FILA_CUATRO) == 0){
         return 3;
     }
     return 4; //error
@@ -147,14 +153,13 @@ char teclado_getch(){
     
     for(int i = 0;i<3;i++){
         set_teclado_scan_out(i);
-        delayms(1);
+        delayms(1);//esperamos un poco para que el valor se estabilice
         if (get_teclado_inputs() > 0){
             column = i;
-            while (get_teclado_inputs() > 3);//esperamos a leer el valor de la fila
-            delayms(2);//le damos tiempo para que se estabilice
             row = get_teclado_inputs();
         }
     }
+    set_teclado_scan_out(3); //devolvemos todas las columnas a 0 para poder detectar nuevas pulsaciones
     return matrix_teclado [column][row];
 }
 
