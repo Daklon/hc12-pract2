@@ -108,7 +108,7 @@ void teclado_init(){
 }
 
 void set_teclado_scan_out(uint8_t pin){
-    switch pin{
+    switch (pin){
         case 0:
             escribir_pin('H',COLUMNA_UNO,1);   
             escribir_pin('H',COLUMNA_DOS,0);
@@ -125,7 +125,6 @@ void set_teclado_scan_out(uint8_t pin){
 }
 
 uint8_t get_teclado_inputs(){
-    uint8_t teclado;
     if (leer_pin('H',FILA_UNO) == 1){
         return 0;
     }else if(leer_pin('H',FILA_DOS) == 1){
@@ -139,7 +138,7 @@ uint8_t get_teclado_inputs(){
 }
 
 char teclado_getch(){
-    uint8_t column,row;
+    uint8_t mask,readed,column,row;
     //comprobamos el teclado hasta que haya una pulsación
     mask = 84;
     do{
