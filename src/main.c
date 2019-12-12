@@ -2,6 +2,7 @@
 #include <es.h>
 #include <timer.h>
 #include <atd_lib.h>
+#include <pwm.h>
 
 #define COLUMNA_UNO 4
 #define COLUMNA_DOS 6
@@ -220,10 +221,10 @@ uint8_t array_to_uint(uint8_t* value){
         temp += value[i] * multiplier;
         multiplier *= 10;
     }
-    return temp
+    return temp;
 }
 
-uint8_t* set_shifted_value(uint8_t value,uint8_t new_value,uint8_t shifts){
+uint8_t* set_shifted_value(uint8_t* value,uint8_t new_value,uint8_t shifts){
     for(uint8_t i = 3;i>0;i--){
         value[i] = value[i-1];
     }
@@ -239,8 +240,8 @@ void set_motor_speed(uint8_t speed){
 }
 
 int main(){
-    uint16_t i = 0, potval = 0;
-    uint8_t keyboard_input[4],temp[0];
+    uint16_t i = 0, potval = 0,;
+    char keyboard_input[4],temp[0],value;
     keyboard_input[3] = 0;
     temp[0] = 0;
     serial_init();
@@ -258,15 +259,18 @@ int main(){
             i = 0;
         }else if (value == '*'){//aceptar
             //comprobar si el valor está entre 0 y 100
-            if array_to_uint(temp)
-            keyboard_input = temp;
+            if (array_to_uint(temp)>= 100 && array_to_uint(temp) <= 0){
+                keyboard_input = temp;
+                //ponemos el motor a esa velocidad
+                set_motor_speed(array_to_uint(temp));
+            } else {
+                temp = keyboard_input;
+            }
             i = 0;
-            //ponemos el motor a esa velocidad
-            set_motor_speed(array_to_uint(temp));
         } else if (i>3){//demasiados caracteres
             i = 0;
             temp = keyboard_input;
-        }else if (array_to_uint(temp) > 100){//comprobar si el valor está entre 0 y 100
+        }else if (array_to_uint(temp) >= 100 && array_to_uint(temp) <= 0){//comprobar si el valor está entre 0 y 100
             i = 0;
             temp = keyboard_input;
         }else{
