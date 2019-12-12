@@ -68,12 +68,11 @@ uint16_t get_potenciometro() {
 		serial_print("\nPoten:\n");
 		for (uint8_t i = 0; i < 4; i++) {
 			//serial_printbinword(poten[i]);
-			ret += poten[i] << i;
+			ret = poten[0] >> 6;
 			if(i == 3){
 			    serial_printdecword(ret);
 			    serial_print(" --- ");
             }
-			ret = ret >> 6;
 			if(i==3){
 			    serial_printdecword(ret);
 			    serial_print("\n");
