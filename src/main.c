@@ -85,14 +85,39 @@ uint16_t get_potenciometro() {
 	return ret;
 }
 
+void set_teclado_scan_out(uint8_t pin){
+    switch (pin){
+        case 0:
+            escribir_pin('H',COLUMNA_UNO,0);   
+            escribir_pin('H',COLUMNA_DOS,1);
+            escribir_pin('H',COLUMNA_TRES,1);
+        case 1:
+            escribir_pin('H',COLUMNA_UNO,1);   
+            escribir_pin('H',COLUMNA_DOS,0);
+            escribir_pin('H',COLUMNA_TRES,1);
+        case 2:
+            escribir_pin('H',COLUMNA_UNO,1);   
+            escribir_pin('H',COLUMNA_DOS,1);
+            escribir_pin('H',COLUMNA_TRES,0);
+        case 3:
+            escribir_pin('H',COLUMNA_UNO,0);   
+            escribir_pin('H',COLUMNA_DOS,0);
+            escribir_pin('H',COLUMNA_TRES,0);
+    }
+}
+
 void teclado_init(){
     //configuramos puerto T como s,s,e,s,e,s,e,e
     e_s_total('H',212);
     //configuramos pullups
     ad_pullup('H',1);
     //ponemos a 0 los bits de salida
-    escribir_puerto('H',0);
+    set_teclado_scan_out(3);
     //mapeamos teclado
+    //1   2   3
+    //4   5   6
+    //7   8   9
+    //*   0   #
     matrix_teclado[0][0] = '1';
     matrix_teclado[0][1] = '4';
     matrix_teclado[0][2] = '7';
@@ -109,27 +134,6 @@ void teclado_init(){
     matrix_teclado[2][3] = '#';
 }
 
-void set_teclado_scan_out(uint8_t pin){
-    switch (pin){
-        case 0:
-            escribir_pin('H',COLUMNA_UNO,1);   
-            escribir_pin('H',COLUMNA_DOS,0);
-            escribir_pin('H',COLUMNA_TRES,0);
-        case 1:
-            escribir_pin('H',COLUMNA_UNO,0);   
-            escribir_pin('H',COLUMNA_DOS,1);
-            escribir_pin('H',COLUMNA_TRES,0);
-        case 2:
-            escribir_pin('H',COLUMNA_UNO,0);   
-            escribir_pin('H',COLUMNA_DOS,0);
-            escribir_pin('H',COLUMNA_TRES,1);
-        case 3:
-            escribir_pin('H',COLUMNA_UNO,0);   
-            escribir_pin('H',COLUMNA_DOS,0);
-            escribir_pin('H',COLUMNA_TRES,0);
-    }
-}
-
 uint8_t get_teclado_inputs(){
     if (leer_pin('H',FILA_UNO) == 0){
         return 0;
@@ -140,22 +144,23 @@ uint8_t get_teclado_inputs(){
     }else if(leer_pin('H',FILA_CUATRO) == 0){
         return 3;
     }
-    return 4; //error
+    return 4; //sin tecla pulsada
 }
 
 char teclado_getch(){
-    uint8_t mask,readed,column,row;
+    uint8_t column,row;
     //comprobamos el teclado hasta que haya una pulsación
     do{
-        readed = get_teclado_inputs();
-    }while (readed == 4);
-    
+        row = get_teclado_inputs();
+    }while (row == 4);
+    delayms(20);
+    row = get_teclado_inputs();
     for(int i = 0;i<3;i++){
         set_teclado_scan_out(i);
-        delayms(10);//esperamos un poco para que el valor se estabilice
+        delayms(20);//esperamos un poco para que el valor se estabilice
         if (get_teclado_inputs() != 4){
             column = i;
-            row = get_teclado_inputs();
+            break;
         }
     }
     set_teclado_scan_out(3); //devolvemos todas las columnas a 0 para poder detectar nuevas pulsaciones
