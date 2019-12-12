@@ -177,6 +177,10 @@ char teclado_getch(){
     return matrix_teclado [column][row];
 }
 
+void timeout(){
+    boolean_timeout = 1;
+}
+
 char teclado_getch_timeout(uint32_t milis){
     future_f(&timeout,milis*1000);
     uint8_t column,row; 
@@ -205,10 +209,6 @@ char teclado_getch_timeout(uint32_t milis){
     }                    
     set_teclado_scan_out(3); //devolvemos todas las columnas a 0 para poder detectar nuevas pulsaciones
     return matrix_teclado [column][row];
-}
-
-void timeout(){
-    boolean_timeout = 1;
 }
 
 int main(){
