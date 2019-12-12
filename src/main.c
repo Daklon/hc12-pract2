@@ -15,6 +15,7 @@
 uint8_t display_digit = 0;
 uint8_t number[4];
 char matrix_teclado[3][4];
+uint8_t boolean_timeout = 0;
 
 void sieteSeg_init(){
     //incializamos el puerto de salida G
@@ -174,6 +175,40 @@ char teclado_getch(){
     serial_print("-");
     serial_printdecbyte(row);
     return matrix_teclado [column][row];
+}
+
+char teclado_getch_timeout(uint32_t milis){
+    future_f(&timeout,milis*1000);
+    uint8_t column,row; 
+    //comprobamos si ya hay una tecla pulsada, si es así esperamos a que se suelte
+    set_teclado_scan_out(3);
+    delayms(1);          
+    while (get_teclado_inputs()=!4 || boolean_timeout);
+    if boolean_timeout{
+        return 'T';
+    delayms(20);         
+    //comprobamos el teclado hasta que haya una pulsación
+    do{                  
+        row = get_teclado_inputs();
+    }while (row == 4 || boolean_timeout);
+    if boolean_timeout{
+        return 'T';
+    delayms(20);         
+    row = get_teclado_inputs();
+    for(int i = 0;i<3;i++){
+        set_teclado_scan_out(i);
+        delayms(20);//esperamos un poco para que el valor se estabilice
+        if (get_teclado_inputs() != 4){
+            column = i;  
+            break;       
+        }                
+    }                    
+    set_teclado_scan_out(3); //devolvemos todas las columnas a 0 para poder detectar nuevas pulsaciones
+    return matrix_teclado [column][row];
+}
+
+void timeout(){
+    boolean_timeout = 1;
 }
 
 int main(){
