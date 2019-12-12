@@ -4,6 +4,6 @@ all:
 
 # TODO: Configurar documentación para pract2, no para SimpleGEL
 doc:
-	doxygen ./doc/Doxyfile
+	cd SimpleGEL/doc; make
 
 .PHONY: all doc
