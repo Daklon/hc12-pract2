@@ -15,21 +15,22 @@ void sieteSeg_digitos(uint8_t* value){
     uint8_t i;
     uint8_t mask = (1 << 7);//10000000
     for (i=0;i<4;i++){
+        number[i] = value[i];
         number[i] |= mask;
-        mas = mask >> 1;
+        mask = mask >> 1;
     }
 }
 
 void sieteSeg_valor(uint16_t value){
     int16_t i = 3;
-    uint8_t mask = (1 << 7);
+    uint8_t mask = (1 << 4);
     while(i >= 0){
         number[i] = value % 10;
         number[i] |= mask;
         value /= 10;
+        mask = mask << 1;
         i--;
     }
-    sieteSeg_digitos(number);
 }
 
 void update_siete_seg(){
@@ -74,8 +75,8 @@ int main(){
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
     while(1){
-        sietesSeg_valor(i);
-        delayms(500);
+        sieteSeg_valor(i);
+        delayms(1500);
         i++;
 
 		// Potenciometro
