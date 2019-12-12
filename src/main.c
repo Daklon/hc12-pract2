@@ -92,6 +92,14 @@ uint8_t* set_shifted_value(uint8_t value,uint8_t new_value,uint8_t shifts){
     value[0] = new_value;
 }
 
+void motor_init(){
+    pwmBase(0, 0, 0, 1, 100, 15, 0);
+}
+
+void set_motor_speed(uint8_t speed){
+    cambiaPWDTYporciento(speed);
+}
+
 int main(){
     uint16_t i = 0, potval = 0;
     uint8_t keyboard_input[4],temp[0];
@@ -104,6 +112,7 @@ int main(){
 	teclado_init();
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
+    motor_init();
     while(1){
         value = teclado_getch();
         if (value == '#'){//cancelar
@@ -114,7 +123,8 @@ int main(){
             if array_to_uint(temp)
             keyboard_input = temp;
             i = 0;
-            //ponemos el motor a esa velocidad TODO
+            //ponemos el motor a esa velocidad
+            set_motor_speed(array_to_uint(temp));
         } else if (i>3){//demasiados caracteres
             i = 0;
             temp = keyboard_input;
