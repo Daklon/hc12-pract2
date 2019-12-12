@@ -84,19 +84,28 @@ void teclado_init(){
 
 int main(){
     uint16_t i = 0, potval = 0;
+	uint8_t tecladoval = 0;
     serial_init();
     serial_print("\nInicializado");
     serial_recv();
     sieteSeg_init();
 	potenciometro_init();
+	teclado_init();
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
     while(1){
 		// Potenciometro
+		/*
 		potval = get_potenciometro();
 		serial_print("\nPotenciometro: \n");
 		serial_printdecword(potval);
 		sieteSeg_valor(potval);
 		delayms(200);
+		*/
+
+		serial_print("\nTECLADO:\n");
+		while ((tecladoval = teclado_getch()) != '#') {
+			serial_print(tecladoval + '0');
+		}
     }
 }
