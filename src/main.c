@@ -67,12 +67,17 @@ uint16_t get_potenciometro() {
 		// Convert to uint16_t
 		serial_print("\nPoten:\n");
 		for (uint8_t i = 0; i < 4; i++) {
-			serial_printbinword(poten[i]);
-			serial_print(" --- ");
+			//serial_printbinword(poten[i]);
 			ret += poten[i] << i;
+			if(i == 3){
+			    serial_printdecword(ret);
+			    serial_print(" --- ");
+            }
 			ret = ret >> 6;
-			serial_printbinword(ret);
-			serial_print("\n");
+			if(i==3){
+			    serial_printdecword(ret);
+			    serial_print("\n");
+			}
 		}
 	}
 	return ret;
@@ -88,15 +93,10 @@ int main(){
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
     while(1){
-        sieteSeg_valor(i);
-        delayms(1500);
-        i++;
-
 		// Potenciometro
 		potval = get_potenciometro();
 		serial_print("\nPotenciometro: \n");
 		serial_printdecword(potval);
 		sieteSeg_valor(potval);
-        delayms(500);
     }
 }
