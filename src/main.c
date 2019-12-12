@@ -153,7 +153,7 @@ char teclado_getch(){
     //comprobamos si ya hay una tecla pulsada, si es así esperamos a que se suelte
     set_teclado_scan_out(3);
     delayms(1);
-    while (get_teclado_inputs()=!4);
+    while (get_teclado_inputs() != 4);
     delayms(20);
     //comprobamos el teclado hasta que haya una pulsación
     do{
@@ -187,15 +187,15 @@ char teclado_getch_timeout(uint32_t milis){
     //comprobamos si ya hay una tecla pulsada, si es así esperamos a que se suelte
     set_teclado_scan_out(3);
     delayms(1);          
-    while (get_teclado_inputs()=!4 || boolean_timeout);
-    if boolean_timeout{
+    while (get_teclado_inputs() != 4 || boolean_timeout);
+    if (boolean_timeout){
         return 'T';
     delayms(20);         
     //comprobamos el teclado hasta que haya una pulsación
     do{                  
         row = get_teclado_inputs();
     }while (row == 4 || boolean_timeout);
-    if boolean_timeout{
+    if (boolean_timeout){
         return 'T';
     delayms(20);         
     row = get_teclado_inputs();
@@ -212,7 +212,6 @@ char teclado_getch_timeout(uint32_t milis){
 }
 
 int main(){
-    uint16_t i = 0, potval = 0;
 	uint8_t tecladoval = 0;
     serial_init();
     serial_print("\nInicializado");
@@ -235,7 +234,7 @@ int main(){
 		serial_print("\nTECLADO:\n");
 		while ((tecladoval = teclado_getch()) != '#') {
 		    if(tecladoval == '1'){
-		        serial_print('1');
+		        serial_print("1");
 		    }else{
 			    serial_print(tecladoval + '0');
             }
