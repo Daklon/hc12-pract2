@@ -73,7 +73,7 @@ uint16_t get_potenciometro() {
 			    serial_printdecword(ret);
 			    serial_print(" --- ");
             }
-			ret = ret >> 6;
+			ret = ret >> 8;
 			if(i==3){
 			    serial_printdecword(ret);
 			    serial_print("\n");
