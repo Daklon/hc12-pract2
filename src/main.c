@@ -76,8 +76,10 @@ uint16_t get_potenciometro() {
 }
 
 void teclado_init(){
-    //configuramos puerto
-    e_s_total('G',255);
+    //configuramos puerto T como x,s,e,s,e,s,e,e
+    e_s_total('T',84);
+    //ponemos a 1 los bits de salida
+    escribir_puerto('T',84);
 }
 
 int main(){
