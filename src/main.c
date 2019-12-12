@@ -149,6 +149,11 @@ uint8_t get_teclado_inputs(){
 
 char teclado_getch(){
     uint8_t column,row;
+    //comprobamos si ya hay una tecla pulsada, si es así esperamos a que se suelte
+    set_teclado_scan_out(3);
+    delayms(1);
+    while (get_teclado_inputs()=!4);
+    delayms(20);
     //comprobamos el teclado hasta que haya una pulsación
     do{
         row = get_teclado_inputs();
