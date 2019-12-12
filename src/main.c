@@ -75,21 +75,61 @@ uint16_t get_potenciometro() {
 	return ret;
 }
 
+uint8_t array_to_uint(uint8_t* value){
+    uint8_t temp = 0;
+    uint8_t multiplier = 1;
+    for (uint8_t i = 0;i<4;i++){
+        temp += value[i] * multiplier;
+        multiplier *= 10;
+    }
+    return temp
+}
+
+uint8_t* set_shifted_value(uint8_t value,uint8_t new_value,uint8_t shifts){
+    for(uint8_t i = 3;i>0;i--){
+        value[i] = value[i-1];
+    }
+    value[0] = new_value;
+}
+
 int main(){
     uint16_t i = 0, potval = 0;
+    uint8_t keyboard_input[4],temp[0];
+    keyboard_input[3] = 0;
+    temp[0] = 0;
     serial_init();
     serial_print("\nInicializado");
     serial_recv();
     sieteSeg_init();
-	potenciometro_init();
+	teclado_init();
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
     while(1){
-		// Potenciometro
-		potval = get_potenciometro();
-		serial_print("\nPotenciometro: \n");
-		serial_printdecword(potval);
-		sieteSeg_valor(potval);
-		delayms(200);
+        value = teclado_getch();
+        if (value == '#'){//cancelar
+            temp = keyboard_input;
+            i = 0;
+        }else if (value == '*'){//aceptar
+            //comprobar si el valor está entre 0 y 100
+            if array_to_uint(temp)
+            keyboard_input = temp;
+            i = 0;
+            //ponemos el motor a esa velocidad TODO
+        } else if (i>3){//demasiados caracteres
+            i = 0;
+            temp = keyboard_input;
+        }else if (array_to_uint(temp) > 100){//comprobar si el valor está entre 0 y 100
+            i = 0;
+            temp = keyboard_input;
+        }else{
+            if(i == 0){
+                for(uint8_t j = 0;j<4;j++){
+                    temp[0] = 0;
+                }
+            }
+            temp = set_shifted_value(temp,value,1);
+            i++;
+        }
+		sieteSeg_digitos(temp);
     }
 }
