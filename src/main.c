@@ -3,6 +3,15 @@
 #include <timer.h>
 #include <atd_lib.h>
 
+#define COLUMNA_UNO 4
+#define COLUMNA_DOS 6
+#define COLUMNA_TRES 2
+
+#define FILA_UNO 5
+#define FILA_DOS 0
+#define FILA_TRES 1
+#define FILA_CUATRO 3
+
 uint8_t display_digit = 0;
 uint8_t number[4];
 
@@ -119,19 +128,28 @@ char teclado_getch(){
 
 int main(){
     uint16_t i = 0, potval = 0;
+	uint8_t tecladoval = 0;
     serial_init();
     serial_print("\nInicializado");
     serial_recv();
     sieteSeg_init();
 	potenciometro_init();
+	teclado_init();
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
     while(1){
 		// Potenciometro
+		/*
 		potval = get_potenciometro();
 		serial_print("\nPotenciometro: \n");
 		serial_printdecword(potval);
 		sieteSeg_valor(potval);
 		delayms(200);
+		*/
+
+		serial_print("\nTECLADO:\n");
+		while ((tecladoval = teclado_getch()) != '#') {
+			serial_print(tecladoval + '0');
+		}
     }
 }
