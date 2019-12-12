@@ -59,7 +59,7 @@ void potenciometro_init() {
 }
 
 uint16_t get_potenciometro() {
-	uint8_t port = leer_puerto('T');
+	uint8_t port = 0;
 	uint16_t poten[4];
 	uint16_t ret = 0;
 
