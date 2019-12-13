@@ -93,18 +93,22 @@ void set_teclado_scan_out(uint8_t pin){
             escribir_pin('H',COLUMNA_UNO,0);   
             escribir_pin('H',COLUMNA_DOS,1);
             escribir_pin('H',COLUMNA_TRES,1);
+            break;
         case 1:
             escribir_pin('H',COLUMNA_UNO,1);   
             escribir_pin('H',COLUMNA_DOS,0);
             escribir_pin('H',COLUMNA_TRES,1);
+            break;
         case 2:
             escribir_pin('H',COLUMNA_UNO,1);   
             escribir_pin('H',COLUMNA_DOS,1);
             escribir_pin('H',COLUMNA_TRES,0);
+            break;
         case 3:
             escribir_pin('H',COLUMNA_UNO,0);   
             escribir_pin('H',COLUMNA_DOS,0);
             escribir_pin('H',COLUMNA_TRES,0);
+            break;
     }
 }
 
@@ -158,24 +162,20 @@ char teclado_getch(){
     delayms(20);
     //comprobamos el teclado hasta que haya una pulsación
     do{
-        row = get_teclado_inputs();
-    }while (row == 4);
+        column = get_teclado_inputs();
+    }while (column == 4);
     delayms(20);
-    row = get_teclado_inputs();
+    column = get_teclado_inputs();
     for(int i = 0;i<3;i++){
         set_teclado_scan_out(i);
         delayms(20);//esperamos un poco para que el valor se estabilice
         if (get_teclado_inputs() != 4){
-            column = i;
+            row = i;
             break;
         }
     }
     set_teclado_scan_out(3); //devolvemos todas las columnas a 0 para poder detectar nuevas pulsaciones
-    serial_print("\nvalues:");
-    serial_printdecbyte(column);
-    serial_print("-");
-    serial_printdecbyte(row);
-    return matrix_teclado [column][row];
+    return matrix_teclado[row][column];
 }
 
 void timeout(){
@@ -259,6 +259,7 @@ int main(){
     periodic_f(&update_siete_seg,2500);
     motor_init();
     while(1){
+<<<<<<< HEAD
         value = teclado_getch();
         if (value == '#'){//cancelar
             copyto(temp,keyboard_input);
