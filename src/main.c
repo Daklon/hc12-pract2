@@ -224,11 +224,11 @@ uint8_t array_to_uint(uint8_t* value){
     return temp;
 }
 
-void set_shifted_value(char* value,char new_value){
+void set_shifted_value(uint8_t value,char new_value){
     for(uint8_t i = 3;i>0;i--){
         value[i] = value[i-1];
     }
-    value[0] = new_value;
+    value[0] = new_value- '0';
 }
 
 void motor_init(){
@@ -239,7 +239,7 @@ void set_motor_speed(uint8_t speed){
     cambiaPWDTYporciento(speed);
 }
 
-void copyto(char* to, char* from){
+void copyto(uint8_t* to, uint8_t* from){
     for (uint8_t i = 0;i < 4;i++){
        to[i] = from[i]; 
     }
@@ -247,9 +247,13 @@ void copyto(char* to, char* from){
 
 int main(){
     uint16_t i = 0;
-    char keyboard_input[4],temp[4],value;
+    uint8_t keyboard_input[4],temp[4];
+    char value;
     keyboard_input[3] = 0;
-    temp[0] = 0;
+    for (uint8_t j = 0; j<4;j++){
+         temp[j] = 0;
+         keyboard_input[j] = 0;
+    }
     serial_init();
     serial_print("\nInicializado");
     serial_recv();
@@ -258,33 +262,30 @@ int main(){
     initialize(); //initializes timer
     periodic_f(&update_siete_seg,2500);
     motor_init();
+    sieteSeg_digitos(temp);
     while(1){
         value = teclado_getch();
+        if(i == 0){
+            for(uint8_t j = 0;j<4;j++){
+                temp[0] = 0;
+            }
+        }
         if (value == '#'){//cancelar
             copyto(temp,keyboard_input);
             i = 0;
         }else if (value == '*'){//aceptar
             //comprobar si el valor está entre 0 y 100
-            if (array_to_uint(temp)>= 100 && array_to_uint(temp) <= 0){
-                copyto(keyboard_input,temp);
-                //ponemos el motor a esa velocidad
-                set_motor_speed(array_to_uint(temp));
-            } else {
-                copyto(temp,keyboard_input);
-            }
+            copyto(keyboard_input,temp);
+            //ponemos el motor a esa velocidad
+            set_motor_speed(array_to_uint(temp));
             i = 0;
         } else if (i>3){//demasiados caracteres
             i = 0;
             copyto(temp,keyboard_input);
-        }else if (array_to_uint(temp) >= 100 && array_to_uint(temp) <= 0){//comprobar si el valor está entre 0 y 100
+        }else if ((array_to_uint(temp)*10) +(value -'0') > 100){//comprobar si el valor está entre 0 y 100
             i = 0;
             copyto(temp,keyboard_input);
         }else{
-            if(i == 0){
-                for(uint8_t j = 0;j<4;j++){
-                    temp[0] = 0;
-                }
-            }
             set_shifted_value(temp,value);
             i++;
         }
