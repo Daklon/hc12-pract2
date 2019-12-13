@@ -247,7 +247,7 @@ void copyto(char* to, char* from){
 
 int main(){
     uint16_t i = 0;
-    char keyboard_input[4],temp[0],value;
+    char keyboard_input[4],temp[4],value;
     keyboard_input[3] = 0;
     temp[0] = 0;
     serial_init();
