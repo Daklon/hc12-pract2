@@ -267,7 +267,7 @@ int main(){
         value = teclado_getch();
         if(i == 0){
             for(uint8_t j = 0;j<4;j++){
-                temp[0] = 0;
+                temp[j] = 0;
             }
         }
         if (value == '#'){//cancelar
