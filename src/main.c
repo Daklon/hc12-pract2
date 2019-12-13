@@ -224,7 +224,7 @@ uint8_t array_to_uint(uint8_t* value){
     return temp;
 }
 
-void set_shifted_value(uint8_t value,char new_value){
+void set_shifted_value(uint8_t* value,char new_value){
     for(uint8_t i = 3;i>0;i--){
         value[i] = value[i-1];
     }
