@@ -224,7 +224,7 @@ uint8_t array_to_uint(uint8_t* value){
     return temp;
 }
 
-char* set_shifted_value(char* value,char new_value){
+void set_shifted_value(char* value,char new_value){
     for(uint8_t i = 3;i>0;i--){
         value[i] = value[i-1];
     }
@@ -285,7 +285,7 @@ int main(){
                     temp[0] = 0;
                 }
             }
-            temp = set_shifted_value(temp,value);
+            set_shifted_value(temp,value);
             i++;
         }
 		sieteSeg_digitos(temp);
