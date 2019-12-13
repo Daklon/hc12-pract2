@@ -52,10 +52,10 @@ char display_port = 'G';
 /** Port where the numeric keyboard is connected to. */
 char teclado_port = 'H';
 
-/** Initialises the seven-segment module configuring G
- *  port as an output interface. */
+/** Initialises the seven-segment module configuring
+ *  display_port as an output interface. */
 void sieteSeg_init(){
-    //incializamos el puerto de salida G
+    //incializamos el puerto de salida display_port
     e_s_total(display_port,255);
 }
 
