@@ -35,6 +35,8 @@
 #define FILA_TRES 1
 #define FILA_CUATRO 3
 
+#define NINGUNA_TECLA_PULSADA 4
+
 uint8_t display_digit = 0;
 uint8_t number[4];
 char matrix_teclado[3][4];
@@ -172,7 +174,7 @@ uint8_t get_teclado_inputs(){
     }else if(leer_pin('H',FILA_CUATRO) == 0){
         return 3;
     }
-    return 4; //sin tecla pulsada
+    return NINGUNA_TECLA_PULSADA; //sin tecla pulsada
 }
 
 char teclado_getch(){
@@ -180,18 +182,18 @@ char teclado_getch(){
     //comprobamos si ya hay una tecla pulsada, si es así esperamos a que se suelte
     set_teclado_scan_out(3);
     delayms(1);
-    while (get_teclado_inputs() != 4);
+    while (get_teclado_inputs() != NINGUNA_TECLA_PULSADA);
     delayms(20);
     //comprobamos el teclado hasta que haya una pulsación
     do{
         column = get_teclado_inputs();
-    }while (column == 4);
+    }while (column == NINGUNA_TECLA_PULSADA);
     delayms(20);
     column = get_teclado_inputs();
     for(int i = 0;i<3;i++){
         set_teclado_scan_out(i);
         delayms(20);//esperamos un poco para que el valor se estabilice
-        if (get_teclado_inputs() != 4){
+        if (get_teclado_inputs() != NINGUNA_TECLA_PULSADA){
             row = i;
             break;
         }
@@ -210,30 +212,30 @@ char teclado_getch_timeout(uint32_t milis){
     //comprobamos si ya hay una tecla pulsada, si es así esperamos a que se suelte
     set_teclado_scan_out(3);
     delayms(1);          
-    while (get_teclado_inputs() != 4 || boolean_timeout);
+    while (get_teclado_inputs() != NINGUNA_TECLA_PULSADA || boolean_timeout);
     if (boolean_timeout){
         return 'T';
     }
     delayms(20);         
     //comprobamos el teclado hasta que haya una pulsación
     do{                  
-        row = get_teclado_inputs();
-    }while (row == 4 || boolean_timeout);
+        column = get_teclado_inputs();
+    }while (column == NINGUNA_TECLA_PULSADA || boolean_timeout);
     if (boolean_timeout){
         return 'T';
     }
     delayms(20);         
-    row = get_teclado_inputs();
+    column = get_teclado_inputs();
     for(int i = 0;i<3;i++){
         set_teclado_scan_out(i);
         delayms(20);//esperamos un poco para que el valor se estabilice
-        if (get_teclado_inputs() != 4){
-            column = i;  
+        if (get_teclado_inputs() != NINGUNA_TECLA_PULSADA){
+            row = i;  
             break;       
         }                
     }                    
     set_teclado_scan_out(3); //devolvemos todas las columnas a 0 para poder detectar nuevas pulsaciones
-    return matrix_teclado [column][row];
+    return matrix_teclado [[row]column];
 }
 
 uint8_t array_to_uint(uint8_t* value){
