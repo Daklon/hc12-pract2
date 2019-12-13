@@ -235,7 +235,7 @@ char teclado_getch_timeout(uint32_t milis){
         }                
     }                    
     set_teclado_scan_out(3); //devolvemos todas las columnas a 0 para poder detectar nuevas pulsaciones
-    return matrix_teclado [[row]column];
+    return matrix_teclado [row][column];
 }
 
 uint8_t array_to_uint(uint8_t* value){
