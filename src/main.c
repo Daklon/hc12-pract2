@@ -289,6 +289,6 @@ int main(){
             set_shifted_value(temp,value);
             i++;
         }
-		sieteSeg_digitos(temp);
+		sieteSeg_valor(array_to_uint(temp));
     }
 }
