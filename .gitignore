@@ -1,6 +1,6 @@
 #ignore docs
 SimpleGEL/doc/html/
-doc/
+doc/html/
 
 # Prerequisites
 *.d
