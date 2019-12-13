@@ -259,7 +259,6 @@ int main(){
     periodic_f(&update_siete_seg,2500);
     motor_init();
     while(1){
-<<<<<<< HEAD
         value = teclado_getch();
         if (value == '#'){//cancelar
             copyto(temp,keyboard_input);
