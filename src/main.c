@@ -42,9 +42,12 @@ uint8_t number[4];
 char matrix_teclado[3][4];
 uint8_t boolean_timeout = 0;
 
+char display_port = 'G';
+char teclado_port = 'H';
+
 void sieteSeg_init(){
     //incializamos el puerto de salida G
-    e_s_total('G',255);
+    e_s_total(display_port,255);
 }
 
 void sieteSeg_digitos(uint8_t* value){
@@ -58,7 +61,7 @@ void sieteSeg_digitos(uint8_t* value){
 }
 
 void sieteSeg_valor(uint16_t value){
-    int16_t i = 3;
+    int8_t i = 3;
     uint8_t mask = (1 << 4);
     while(i >= 0){
         number[i] = value % 10;
@@ -73,7 +76,7 @@ void update_siete_seg(){
     if(display_digit > 3){
         display_digit = 0;
     }
-    escribir_puerto('G',number[display_digit]);
+    escribir_puerto(display_port,number[display_digit]);
     display_digit++;
 }
 
@@ -101,7 +104,6 @@ uint16_t get_potenciometro() {
 
 	if (atd_devuelveValores(port, poten, 4) == 1) {
 		// Convert to uint16_t
-		serial_print("\nPoten:\n");
 		for (uint8_t i = 0; i < 4; i++) {
 			//serial_printbinword(poten[i]);
 			ret += poten[i] >> 6;
@@ -114,33 +116,33 @@ uint16_t get_potenciometro() {
 void set_teclado_scan_out(uint8_t pin){
     switch (pin){
         case 0:
-            escribir_pin('H',COLUMNA_UNO,0);   
-            escribir_pin('H',COLUMNA_DOS,1);
-            escribir_pin('H',COLUMNA_TRES,1);
+            escribir_pin(teclado_port,COLUMNA_UNO,0);   
+            escribir_pin(teclado_port,COLUMNA_DOS,1);
+            escribir_pin(teclado_port,COLUMNA_TRES,1);
             break;
         case 1:
-            escribir_pin('H',COLUMNA_UNO,1);   
-            escribir_pin('H',COLUMNA_DOS,0);
-            escribir_pin('H',COLUMNA_TRES,1);
+            escribir_pin(teclado_port,COLUMNA_UNO,1);   
+            escribir_pin(teclado_port,COLUMNA_DOS,0);
+            escribir_pin(teclado_port,COLUMNA_TRES,1);
             break;
         case 2:
-            escribir_pin('H',COLUMNA_UNO,1);   
-            escribir_pin('H',COLUMNA_DOS,1);
-            escribir_pin('H',COLUMNA_TRES,0);
+            escribir_pin(teclado_port,COLUMNA_UNO,1);   
+            escribir_pin(teclado_port,COLUMNA_DOS,1);
+            escribir_pin(teclado_port,COLUMNA_TRES,0);
             break;
         case 3:
-            escribir_pin('H',COLUMNA_UNO,0);   
-            escribir_pin('H',COLUMNA_DOS,0);
-            escribir_pin('H',COLUMNA_TRES,0);
+            escribir_pin(teclado_port,COLUMNA_UNO,0);   
+            escribir_pin(teclado_port,COLUMNA_DOS,0);
+            escribir_pin(teclado_port,COLUMNA_TRES,0);
             break;
     }
 }
 
 void teclado_init(){
     //configuramos puerto T como s,s,e,s,e,s,e,e
-    e_s_total('H',212);
+    e_s_total(teclado_port,212);
     //configuramos pullups
-    ad_pullup('H',1);
+    ad_pullup(teclado_port,1);
     //ponemos a 0 los bits de salida
     set_teclado_scan_out(3);
     //mapeamos teclado
@@ -165,13 +167,13 @@ void teclado_init(){
 }
 
 uint8_t get_teclado_inputs(){
-    if (leer_pin('H',FILA_UNO) == 0){
+    if (leer_pin(teclado_port,FILA_UNO) == 0){
         return 0;
-    }else if(leer_pin('H',FILA_DOS) == 0){
+    }else if(leer_pin(teclado_port,FILA_DOS) == 0){
         return 1;
-    }else if(leer_pin('H',FILA_TRES) == 0){
+    }else if(leer_pin(teclado_port,FILA_TRES) == 0){
         return 2;
-    }else if(leer_pin('H',FILA_CUATRO) == 0){
+    }else if(leer_pin(teclado_port,FILA_CUATRO) == 0){
         return 3;
     }
     return NINGUNA_TECLA_PULSADA; //sin tecla pulsada
@@ -181,7 +183,6 @@ char teclado_getch(){
     uint8_t column,row;
     //comprobamos si ya hay una tecla pulsada, si es así esperamos a que se suelte
     set_teclado_scan_out(3);
-    delayms(1);
     while (get_teclado_inputs() != NINGUNA_TECLA_PULSADA);
     delayms(20);
     //comprobamos el teclado hasta que haya una pulsación
@@ -192,7 +193,6 @@ char teclado_getch(){
     column = get_teclado_inputs();
     for(int i = 0;i<3;i++){
         set_teclado_scan_out(i);
-        delayms(20);//esperamos un poco para que el valor se estabilice
         if (get_teclado_inputs() != NINGUNA_TECLA_PULSADA){
             row = i;
             break;
@@ -211,7 +211,6 @@ char teclado_getch_timeout(uint32_t milis){
     uint8_t column,row; 
     //comprobamos si ya hay una tecla pulsada, si es así esperamos a que se suelte
     set_teclado_scan_out(3);
-    delayms(1);          
     while (get_teclado_inputs() != NINGUNA_TECLA_PULSADA || boolean_timeout);
     if (boolean_timeout){
         return 'T';
@@ -228,7 +227,6 @@ char teclado_getch_timeout(uint32_t milis){
     column = get_teclado_inputs();
     for(int i = 0;i<3;i++){
         set_teclado_scan_out(i);
-        delayms(20);//esperamos un poco para que el valor se estabilice
         if (get_teclado_inputs() != NINGUNA_TECLA_PULSADA){
             row = i;  
             break;       
@@ -280,7 +278,6 @@ int main(){
     }
     serial_init();
     serial_print("\nInicializado");
-    serial_recv();
     sieteSeg_init();
 	teclado_init();
     initialize(); //initializes timer
@@ -289,31 +286,33 @@ int main(){
     sieteSeg_digitos(temp);
     while(1){
         value = teclado_getch();
+        //si se empieza a recibir un valor por teclado
+        //ponemos temp a 0 para poder llenarlo con el 
+        //valor que recibimos
         if(i == 0){
             for(uint8_t j = 0;j<4;j++){
                 temp[j] = 0;
             }
         }
         if (value == '#'){//cancelar
-            copyto(temp,keyboard_input);
+            copyto(temp,keyboard_input);//devolvemos el display a su valor original
             i = 0;
         }else if (value == '*'){//aceptar
-            //comprobar si el valor está entre 0 y 100
-            copyto(keyboard_input,temp);
+            copyto(keyboard_input,temp);//hacemos un "backup" del valor del display
             //ponemos el motor a esa velocidad
             set_motor_speed(array_to_uint(temp));
             i = 0;
         } else if (i>3){//demasiados caracteres
             i = 0;
-            copyto(temp,keyboard_input);
+            copyto(temp,keyboard_input);//devolvemos el display a su valor original
         }else if ((array_to_uint(temp)*10) +(value -'0') > 100){//comprobar si el valor está entre 0 y 100
             i = 0;
-            copyto(temp,keyboard_input);
+            copyto(temp,keyboard_input);//devolvemos el display a su valor original
         }else{
-            set_shifted_value(temp,value);
+            set_shifted_value(temp,value);//desplazamos los caracteres a la izquierda y ponemos el dígito introducido por teclado en el menos significativo
             i++;
         }
-		sieteSeg_valor(array_to_uint(temp));
+		sieteSeg_valor(array_to_uint(temp));//imprimimos temp
     }
 }
  /*@}*/
