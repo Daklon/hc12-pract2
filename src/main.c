@@ -1,3 +1,25 @@
+/*! \file main.c
+    \brief Working implementation of the Embedded Systems project
+
+	Features:
+
+	\* Seven-segment display support, allowing to display integer numeric values in it.
+
+	\* Potentiometer support with up to 16 bit precision.
+
+	\* Numeric keyboard support.
+
+	\* Main program that connects the functionality for testing purposes
+*/
+
+/*! @defgroup hc12-lib  hc12-lib
+
+  Embedded Systems project library made in class
+
+  \date 2019-12-13
+
+ */
+ /*@{*/
 #include <types.h>
 #include <es.h>
 #include <timer.h>
@@ -292,3 +314,4 @@ int main(){
 		sieteSeg_valor(array_to_uint(temp));
     }
 }
+ /*@}*/
